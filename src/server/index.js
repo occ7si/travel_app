@@ -30,7 +30,7 @@ const USER_KEY_GEONAMES = `&username=${process.env.USER_NAME_GEONAMES}`;
 const SETTINGS_GEONAMES = `&maxRows=1`;
 
 // variables for weatherbit fetch request
-const URL_WEATHERBIT = 'http://api.weatherbit.io/v2.0/current?';
+const URL_WEATHERBIT = 'http://api.weatherbit.io/v2.0/forecast/daily?';
 const KEY_WEATHERBIT = `&key=${process.env.API_KEY_WEATHERBIT}`;
 
 const destination = new Object();
@@ -50,16 +50,24 @@ app.post('/getCoordForDestination', function (req,res) {
     }) 
 });
 
-app.post('/getWeatherForCoordinates', function (req, res) {
+app.post('/getWeatherForcastForCoordinates', function (req, res) {
     const data = req.body;
-    const lat = `&lat=${data.coord_lat}`;
-    const lng = `&lon=${data.coord_lng}`;
+    const lat = `&lat=${data.lat}`;
+    const lng = `&lon=${data.lng}`;
+    console.log('user date: ' + data.date);
 
     fetch(URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
     .then(res => res.json())
     .then(function(result) {
-        destination.temp = result.data[0].temp;
-        res.send(destination);
+        // console.dir(result);
+        const array = result.data;
+        for (let i = 0; i < array.length; i++) {
+            if(array[i].valid_date === data.date) {
+                console.dir(array[i]);
+                res.send(array[i]);
+            }
+        }
+        res.send();
     })
 });
 

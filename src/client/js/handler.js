@@ -4,6 +4,7 @@ export function handleSubmit(event){
     event.preventDefault();
 
     const userInput = document.getElementById('tweet').value;
+    const userDate = document.getElementById('showDate').value;
     if (userInput === '') {
         throw new Error('Error: Enter a destination!');
     }
@@ -20,13 +21,13 @@ export function handleSubmit(event){
     .then(res => res.json())
     .then(function(result) {
         console.dir(result);
-        fetch('http://localhost:3031/getWeatherforCoordinates', {
+        fetch('http://localhost:3031/getWeatherForcastforCoordinates', {
             method: 'POST',
             credential: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body:JSON.stringify(result)
+            body:JSON.stringify({lat:result.coord_lng, lng: result.coord_lng, date: userDate})
         });
     })
     .then(function() {
