@@ -26,30 +26,43 @@ app.listen(3031, function () {
 
 // variables for geonames fetch request
 const URL_GEONAMES = 'http://api.geonames.org/searchJSON?';
-const geonames_userAuth = `&username=${process.env.USER_NAME_GEONAMES}`;
-const geonames_settings = `&maxRows=1`;
+const USER_KEY_GEONAMES = `&username=${process.env.USER_NAME_GEONAMES}`;
+const SETTINGS_GEONAMES = `&maxRows=1`;
+
+// variables for weatherbit fetch request
+const URL_WEATHERBIT = 'http://api.weatherbit.io/v2.0/current?';
+const KEY_WEATHERBIT = `&key=${process.env.API_KEY_WEATHERBIT}`;
 
 const destination = new Object();
 
 app.post('/getCoordForDestination', function (req,res) {
     const data = req.body;
     const cityName = `name_equals=${data.cityName}`;
-    console.log(URL_GEONAMES + cityName + geonames_settings + geonames_userAuth);
-    fetch(URL_GEONAMES + cityName + geonames_settings + geonames_userAuth)
+    fetch(URL_GEONAMES + cityName + SETTINGS_GEONAMES + USER_KEY_GEONAMES)
     .then(res => res.json())
-    .then(function(res) {
-        console.dir(res);
-        destination.coord_lat = res.geonames[0].lat;
-        destination.coord_lng = res.geonames[0].lng;
+    .then(function(result) {
+        destination.coord_lat = result.geonames[0].lat;
+        destination.coord_lng = result.geonames[0].lng;
         destination.name = data.cityName;
-        console.dir(destination);
-    }).then(function(result) {
-        console.log('res.send()');
-        res.send();
-    });
+    })
+    .then(function(result) {
+        res.send(destination);
+    }) 
+});
+
+app.post('/getWeatherForCoordinates', function (req, res) {
+    const data = req.body;
+    const lat = `&lat=${data.coord_lat}`;
+    const lng = `&lon=${data.coord_lng}`;
+
+    fetch(URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
+    .then(res => res.json())
+    .then(function(result) {
+        destination.temp = result.data[0].temp;
+        res.send(destination);
+    })
 });
 
 app.get('/getAll', function (req, res) {
-    // console.dir(destination);
     res.send(destination);
 });
