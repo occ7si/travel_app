@@ -6,10 +6,6 @@ export function handleSubmit(event){
         throw new Error('Error: Enter a destination!');
     }
 
-    console.log('user input in client: ' + userInput);
-
-    // const destination = {weather: '', image:''};
-
     // request to server to transform destination into coordinates
     fetch('http://localhost:3031/getCoordForDestination', {
         method: 'POST',
@@ -17,48 +13,25 @@ export function handleSubmit(event){
         headers: {
             'Content-Type': 'application/json',
         },
-        body:JSON.stringify({userInput:userInput})
+        body:JSON.stringify({cityName:userInput})
     })
-    .then(updateUI)
-}
-
-
-    // function getWeatherData(coord)
-
-function updateUI() {
-    console.log('inside updateUI');
-    fetch('http://localhost:3031/getAll')
-    .then (destData => destData.json())
-    .then (function (data) {
-        //TODO: update UI elements
-        document.getElementById('destinationCoord').innerHTML = data.coord_lat + ' ' + data.coord_long;
-        // document.getElementById('destinationWeather').innerHTML = data.temp;
-        // document.getElementById('destination').innerHTML = data.coord;
+    .then(function() {
+        updateUI();
     });
 };
 
-    // then request to server with destination coord to get weather
+const destination = new Object();
 
-    // then request to server to get the destination image
-
-    // then display all information in the view
-    //getAll
-
-//     fetch('http://localhost:3031/addUserInput', {
-//         method: 'POST',
-//         credential: 'same-origin',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(userInput)
-//     })
-//     .then (res => res.json())
-//     .then (function(res) {
-//         // Client.displaySentimentAnalysis(res);
-
-
-    // request to Weather API
-
-    // request to Pxabay
-
-// };
+function updateUI() {
+    fetch('http://localhost:3031/getAll')
+    .then (destData => destData.json())
+    .then (function (data) {
+        destination.lat = data.coord_lat;
+        destination.lng = data.coord_lng;
+        destination.name = data.name;
+        document.getElementById('destinationCoord').innerHTML = 
+        `destination name: ${destination.name}
+         destination lng: ${destination.lng}
+         destination lat: ${destination.lat}`;
+    });
+};
