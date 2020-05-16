@@ -50,7 +50,7 @@ app.post('/getCoordForDestination', function (req,res) {
     }) 
 });
 
-app.post('/getWeatherForcastForCoordinates', function (req, res) {
+app.post('/getWeatherForcastForCoordinates', function (req, response) {
     const data = req.body;
     const lat = `&lat=${data.lat}`;
     const lng = `&lon=${data.lng}`;
@@ -59,18 +59,20 @@ app.post('/getWeatherForcastForCoordinates', function (req, res) {
     fetch(URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
     .then(res => res.json())
     .then(function(result) {
-        // console.dir(result);
-        const array = result.data;
-        for (let i = 0; i < array.length; i++) {
-            if(array[i].valid_date === data.date) {
-                console.dir(array[i]);
-                res.send(array[i]);
+        const weatherForcastArray = result.data;
+        for (let i = 0; i < weatherForcastArray.length; i++) {
+            if(weatherForcastArray[i].valid_date === data.date) {
+                destination.temp = weatherForcastArray[i].temp;
+                console.dir(weatherForcastArray[i]);
+                return weatherForcastArray[i];
             }
         }
-        res.send();
+    }).then(function(res) {
+            response.send(res);
     })
 });
 
 app.get('/getAll', function (req, res) {
+    console.log('getAll');
     res.send(destination);
 });
