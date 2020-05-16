@@ -33,6 +33,11 @@ const SETTINGS_GEONAMES = `&maxRows=1`;
 const URL_WEATHERBIT = 'http://api.weatherbit.io/v2.0/forecast/daily?';
 const KEY_WEATHERBIT = `&key=${process.env.API_KEY_WEATHERBIT}`;
 
+// variables for Pixabay fetch request
+const URL_PIXABAY = 'https://pixabay.com/api/?';
+const KEY_PIXABAY = `key=${process.env.API_KEY_PIXABAY}`;
+const SETTINGS_PIXABAY = '&category=places&image_type=photo';
+
 const destination = new Object();
 
 app.post('/getCoordForDestination', function (req,res) {
@@ -71,6 +76,19 @@ app.post('/getWeatherForcastForCoordinates', function (req, response) {
             response.send(res);
     })
 });
+
+app.post('/getPictureForDest', function(req, response) {
+    const data = req.body;
+    const cityName = `&q=${data.cityName}`;
+    console.log(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY);
+    fetch(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
+    .then(res => res.json())
+    .then(function (res) {
+        console.dir(res.hits[0].webformatURL);
+        response.send(res.hits[0]);
+    })
+});
+
 
 app.get('/getAll', function (req, res) {
     console.log('getAll');
