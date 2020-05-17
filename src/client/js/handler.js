@@ -1,13 +1,16 @@
 import fetch from "node-fetch";
 
 const destination = new Object();
+let daysLeft = 0;
 
 export function handleSubmit(event) {
     event.preventDefault();
     const userInput = document.getElementById('tweet').value;
-    const userDate = document.getElementById('showDate').value;
+    const departureDate = document.getElementById('showDate').value;
 
-    if (userInput === '' || userDate === '') {
+    daysLeft = timeToDeparture(document.getElementById('showDate').valueAsDate);
+
+    if (userInput === '' || departureDate === '') {
         throw new Error('Error: Enter a destination and a date!');
     }
 
@@ -18,7 +21,7 @@ export function handleSubmit(event) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body:JSON.stringify({cityName:userInput, date: userDate}),
+        body:JSON.stringify({cityName:userInput, date: departureDate}),
     })
     .then(res => res.json())
     .then(function(res) {
@@ -39,6 +42,20 @@ function updateUI() {
     document.getElementById('destinationCoord').innerHTML =
         `destination name: ${destination.cityName}
          destination date: ${destination.date}
-         destination temp: ${destination.temp} °C`;
+         destination temp: ${destination.temp} °C
+         days left until departure: ${daysLeft} days`;
          document.getElementById('destinationPicture').src = destination.image;
 };
+
+/**
+ * Calculate days left to departure date
+ * @param {string} date - departure date
+ * @returns {number} days - days until departure
+ */
+function timeToDeparture(date) {
+    const departureDate = date;
+    const today = new Date();
+    const timeDiff = departureDate.getTime() - today.getTime();
+    const days = Math.ceil(timeDiff/(1000*60*60*24));
+    return days;
+}
