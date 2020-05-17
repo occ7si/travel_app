@@ -38,59 +38,60 @@ const URL_PIXABAY = 'https://pixabay.com/api/?';
 const KEY_PIXABAY = `key=${process.env.API_KEY_PIXABAY}`;
 const SETTINGS_PIXABAY = '&category=places&image_type=photo';
 
-const destination = new Object();
+app.post('/getDestinationObj', createDestinationObj);
 
-app.post('/getCoordForDestination', function (req,res) {
-    const data = req.body;
-    const cityName = `name_equals=${data.cityName}`;
-    fetch(URL_GEONAMES + cityName + SETTINGS_GEONAMES + USER_KEY_GEONAMES)
-    .then(res => res.json())
-    .then(function(result) {
-        destination.coord_lat = result.geonames[0].lat;
-        destination.coord_lng = result.geonames[0].lng;
-        destination.name = data.cityName;
+function createDestinationObj(req, response) {
+    const destination = new Object();
+    destination.cityName = req.body.cityName;
+    destination.date = req.body.date;
+
+    getCoordForDestination(destination.cityName)
+    .then(function(res) {
+        return getWeatherForCoord(res.geonames[0].lat, res.geonames[0].lng, destination.date);
     })
-    .then(function(result) {
-        res.send(destination);
-    }) 
-});
+    .then(function(res) {
+        console.log('enter then');
+        console.dir(res);
+        destination.temp = res.temp;
+    })
+    .then(function(res) {
+        return getPictureForDest(destination.cityName);
+    })
+    .then(function(res) {
+        destination.image = res.hits[0].webformatURL;
+    })
+    .then(function(res) {
+        console.dir(destination);
+        response.send(destination);
+    })
+};
 
-app.post('/getWeatherForcastForCoordinates', function (req, response) {
-    const data = req.body;
-    const lat = `&lat=${data.lat}`;
-    const lng = `&lon=${data.lng}`;
-    console.log('user date: ' + data.date);
-
-    fetch(URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
+function getPictureForDest(dest) {
+    console.log('Inside getPictureForDest');
+    const cityName = `&q=${dest}`;
+    return fetch(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
     .then(res => res.json())
-    .then(function(result) {
-        const weatherForcastArray = result.data;
-        for (let i = 0; i < weatherForcastArray.length; i++) {
-            if(weatherForcastArray[i].valid_date === data.date) {
-                destination.temp = weatherForcastArray[i].temp;
-                console.dir(weatherForcastArray[i]);
-                return weatherForcastArray[i];
+};
+
+function getWeatherForCoord(latitude, longitude, date) {
+    console.log('Inside getWeatherForCoord');
+    const lat = `&lat=${latitude}`;
+    const lng = `&lon=${longitude}`;
+    return fetch (URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
+    .then(res => res.json())
+    .then(function(res) {
+        for(let i = 0; i < res.data.length; i++) {
+            if(res.data[i].valid_date === date) {
+                return res.data[i];
             }
         }
-    }).then(function(res) {
-            response.send(res);
     })
-});
+};
 
-app.post('/getPictureForDest', function(req, response) {
-    const data = req.body;
-    const cityName = `&q=${data.cityName}`;
-    console.log(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY);
-    fetch(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
+function getCoordForDestination(destination) {
+    console.log('Inside getCoordForDest');
+    console.log(destination);
+    const cityName = `name_equals=${destination}`
+    return fetch (URL_GEONAMES + cityName + SETTINGS_GEONAMES + USER_KEY_GEONAMES)
     .then(res => res.json())
-    .then(function (res) {
-        console.dir(res.hits[0].webformatURL);
-        response.send(res.hits[0]);
-    })
-});
-
-
-app.get('/getAll', function (req, res) {
-    console.log('getAll');
-    res.send(destination);
-});
+};
