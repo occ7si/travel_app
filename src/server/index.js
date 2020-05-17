@@ -40,6 +40,11 @@ const SETTINGS_PIXABAY = '&category=places&image_type=photo';
 
 app.post('/getDestinationObj', createDestinationObj);
 
+/**
+ * Creates a destination object
+ * @param {string} req - request with city name and departure date
+ * @param {string} response - callback to client with destination object
+ */
 function createDestinationObj(req, response) {
     const destination = new Object();
     destination.cityName = req.body.cityName;
@@ -50,8 +55,6 @@ function createDestinationObj(req, response) {
         return getWeatherForCoord(res.geonames[0].lat, res.geonames[0].lng, destination.date);
     })
     .then(function(res) {
-        console.log('enter then');
-        console.dir(res);
         destination.temp = res.temp;
     })
     .then(function(res) {
@@ -61,18 +64,27 @@ function createDestinationObj(req, response) {
         destination.image = res.hits[0].webformatURL;
     })
     .then(function(res) {
-        console.dir(destination);
         response.send(destination);
     })
 };
 
+/**
+ * Requests image information from Pixabay API for destination
+ * @param {string} dest - destination
+ */
 function getPictureForDest(dest) {
-    console.log('Inside getPictureForDest');
     const cityName = `&q=${dest}`;
     return fetch(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
     .then(res => res.json())
 };
 
+/**
+ * Requests weather information from Weatherbit API for destination
+ * for departure date
+ * @param {string} latitude - destination latitude
+ * @param {string} longitude - destination longitude
+ * @param {string} date - departure date
+ */
 function getWeatherForCoord(latitude, longitude, date) {
     console.log('Inside getWeatherForCoord');
     const lat = `&lat=${latitude}`;
@@ -88,6 +100,10 @@ function getWeatherForCoord(latitude, longitude, date) {
     })
 };
 
+/**
+ * Requests lat and lng coordinates for a destination name
+ * @param {string} destination - destination
+ */
 function getCoordForDestination(destination) {
     console.log('Inside getCoordForDest');
     console.log(destination);
