@@ -5,10 +5,10 @@ let daysLeft = 0;
 
 export function handleSubmit(event) {
     event.preventDefault();
-    const userInput = document.getElementById('tweet').value;
-    const departureDate = document.getElementById('showDate').value;
+    const userInput = document.getElementById('destination').value;
+    const departureDate = document.getElementById('date').value;
 
-    daysLeft = timeToDeparture(document.getElementById('showDate').valueAsDate);
+    daysLeft = timeToDeparture(document.getElementById('date').valueAsDate);
 
     if (userInput === '' || departureDate === '') {
         throw new Error('Error: Enter a destination and a date!');
@@ -26,10 +26,11 @@ export function handleSubmit(event) {
     .then(res => res.json())
     .then(function(res) {
         // update destination object with new destination info
-        destination.cityName = res.cityName;
+        destination.cityName = res.cityName.charAt(0).toUpperCase() + res.cityName.slice(1);
         destination.date = res.date;
         destination.temp = res.temp;
         destination.image = res.image;
+        destination.daysLeft = daysLeft;
         destination.countryName = res.countryName;
         console.dir(destination);
         updateUI();
@@ -40,13 +41,16 @@ export function handleSubmit(event) {
  * Updates the UI with new destination object information
  */
 function updateUI() {
-    document.getElementById('destinationCoord').innerHTML =
-        `destination name: ${destination.cityName}
-         destination date: ${destination.date}
-         destination temp: ${destination.temp} °C
-         days left until departure: ${daysLeft} days
-         country: ${destination.countryName}`;
+        document.getElementById('destinationResult').style.visibility = 'visible';
+
          document.getElementById('destinationPicture').src = destination.image;
+         document.getElementById('destinationCity').innerHTML = `My trip to: ${destination.cityName}, ${destination.countryName}`;
+         document.getElementById('departureTime').innerHTML = `Departing: ${destination.date}`;
+         document.getElementById('daysLeft').innerHTML = `${destination.cityName},
+                                                                ${destination.countryName}
+                                                                is ${destination.daysLeft} days away`;
+         document.getElementById('destinationWeather').innerHTML = `The temperature for then is: ${destination.temp} °C`;
+
 };
 
 /**

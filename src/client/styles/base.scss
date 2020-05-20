@@ -1,8 +1,13 @@
+// Add Google font
+@import url("https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto");
+
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: Roboto Slab, 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 main {
@@ -15,6 +20,8 @@ section {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 3em;
     margin-bottom: 10px;
+    margin-top: 30px;
+    font-family: Roboto, Verdana, Geneva, Tahoma, sans-serif;
 }

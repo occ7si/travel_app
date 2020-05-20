@@ -2,39 +2,44 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Tweet Analyzer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Travel Planner</title>
         </script>
     </head>
 
     <body>
 
         <header>
-            <div class="">
-                Logo
-            </div>
-            <div class="">
+            <h1>Travel Planner</h1>
+            <!-- <div class="">
                 navigation
-            </div>
+            </div> -->
         </header>
 
         <main>
             <section>
-                <label for="sentiment-form">Analyze your tweet</label>
-                <form id = "sentiment-form" class="">
-                    <input id="tweet" type="text" name="input" value="" placeholder="Enter a tweet" required>
-                    <input type="date" id="showDate" value ="" placeholder="pick a date" required>
+                <label for="destination-form">Enter your destination</label>
+                <form id = "destination-form" class="">
+                    <input id="destination" type="text" name="input" value="" placeholder="Enter a city" required>
+                    <input id="date" type="date" value ="" placeholder="Pick your departure date" required>
                     <button id="submitForm">Submit</button>
                 </form>
             <section>
 
-            <section>
-                <h1>Form Results:</h1>
-                <div id="destinationCoord"></div>
-                <div id="destinationWeather"></div>
+            <section id = "destinationResult">
+                <img id='destinationPicture' class="destImage" src="">
+                <div id="destinationInfo">
+                    <div id="destinationCity"></div>
+                    <div id="departureTime"></div>
+                    <div id="buttonsContainer">
+                        <button id="saveTrip">save trip</button>
+                        <button id="removeTrip" disabled>remove trip</button>
+                    </div>
+                    <div id="daysLeft"></div>
+                    <div id="destinationWeather"></div>
+                </div>
             </section>
             <section>
-                <h1>Image:</h1>
-                <img id='destinationPicture' src="">
             </section>
         </main>
 

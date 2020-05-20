@@ -5,6 +5,7 @@ import './styles/base.scss'
 import './styles/footer.scss'
 import './styles/form.scss'
 import './styles/header.scss'
+import './styles/cardview.scss'
 
 export {
     handleSubmit
@@ -15,5 +16,5 @@ export {
 //     submitButton.addEventListener('click', handleSubmit(event));
 //     // document.removeEventListener('DOMContentLoaded', this);
 // })
-
+document.getElementById('destinationResult').style.visibility = 'hidden';
 document.getElementById('submitForm').addEventListener('click', handleSubmit);
