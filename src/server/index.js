@@ -38,6 +38,8 @@ const URL_PIXABAY = 'https://pixabay.com/api/?';
 const KEY_PIXABAY = `key=${process.env.API_KEY_PIXABAY}`;
 const SETTINGS_PIXABAY = '&category=places&image_type=photo';
 
+let isTempSet = false;
+
 app.post('/getDestinationObj', createDestinationObj);
 
 /**
@@ -55,7 +57,17 @@ function createDestinationObj(req, response) {
         return getWeatherForCoord(res.geonames[0].lat, res.geonames[0].lng, destination.date);
     })
     .then(function(res) {
-        destination.temp = res.temp;
+        for(let i = 0; i < res.data.length; i++) {
+            if(res.data[i].valid_date === req.body.date) {
+                destination.temp = res.data[i].temp;
+                isTempSet = true;
+                // return res.data[i];
+            }
+        }
+        if (isTempSet === false) {
+            destination.temp = '-';
+        }
+        isTempSet = false;
     })
     .then(function(res) {
         return getPictureForDest(destination.cityName);
@@ -76,6 +88,8 @@ function getPictureForDest(dest) {
     const cityName = `&q=${dest}`;
     return fetch(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
     .then(res => res.json())
+    // TODO: if res is empty return country picture
+    // .then(res => console.log(res))
 };
 
 /**
@@ -91,13 +105,6 @@ function getWeatherForCoord(latitude, longitude, date) {
     const lng = `&lon=${longitude}`;
     return fetch (URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
     .then(res => res.json())
-    .then(function(res) {
-        for(let i = 0; i < res.data.length; i++) {
-            if(res.data[i].valid_date === date) {
-                return res.data[i];
-            }
-        }
-    })
 };
 
 /**
