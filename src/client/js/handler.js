@@ -30,6 +30,7 @@ export function handleSubmit(event) {
         destination.date = res.date;
         destination.temp = res.temp;
         destination.image = res.image;
+        destination.countryName = res.countryName;
         console.dir(destination);
         updateUI();
     });
@@ -43,7 +44,8 @@ function updateUI() {
         `destination name: ${destination.cityName}
          destination date: ${destination.date}
          destination temp: ${destination.temp} °C
-         days left until departure: ${daysLeft} days`;
+         days left until departure: ${daysLeft} days
+         country: ${destination.countryName}`;
          document.getElementById('destinationPicture').src = destination.image;
 };
 

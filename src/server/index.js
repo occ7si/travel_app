@@ -54,6 +54,8 @@ function createDestinationObj(req, response) {
 
     getCoordForDestination(destination.cityName)
     .then(function(res) {
+        // set country name for dest object
+        destination.countryName = res.geonames[0].countryName;
         return getWeatherForCoord(res.geonames[0].lat, res.geonames[0].lng, destination.date);
     })
     .then(function(res) {
@@ -61,7 +63,6 @@ function createDestinationObj(req, response) {
             if(res.data[i].valid_date === req.body.date) {
                 destination.temp = res.data[i].temp;
                 isTempSet = true;
-                // return res.data[i];
             }
         }
         if (isTempSet === false) {
@@ -70,7 +71,7 @@ function createDestinationObj(req, response) {
         isTempSet = false;
     })
     .then(function(res) {
-        return getPictureForDest(destination.cityName);
+        return getPictureForDest(destination);
     })
     .then(function(res) {
         destination.image = res.hits[0].webformatURL;
@@ -82,14 +83,22 @@ function createDestinationObj(req, response) {
 
 /**
  * Requests image information from Pixabay API for destination
- * @param {string} dest - destination
+ * Returns country image if no city image is available for the destination
+ * @param {Object} dest - destination
  */
 function getPictureForDest(dest) {
-    const cityName = `&q=${dest}`;
+    const cityName = `&q=${dest.cityName}`;
+    const countryName = `&q=${dest.countryName}`;
     return fetch(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
     .then(res => res.json())
-    // TODO: if res is empty return country picture
-    // .then(res => console.log(res))
+    .then(function(res) {
+        if (res.hits.length === 0) {
+            return fetch(URL_PIXABAY + KEY_PIXABAY + countryName + SETTINGS_PIXABAY)
+            .then(res => res.json())
+        } else {
+            return res;
+        }
+    })
 };
 
 /**
@@ -100,7 +109,6 @@ function getPictureForDest(dest) {
  * @param {string} date - departure date
  */
 function getWeatherForCoord(latitude, longitude, date) {
-    console.log('Inside getWeatherForCoord');
     const lat = `&lat=${latitude}`;
     const lng = `&lon=${longitude}`;
     return fetch (URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
@@ -112,8 +120,6 @@ function getWeatherForCoord(latitude, longitude, date) {
  * @param {string} destination - destination
  */
 function getCoordForDestination(destination) {
-    console.log('Inside getCoordForDest');
-    console.log(destination);
     const cityName = `name_equals=${destination}`
     return fetch (URL_GEONAMES + cityName + SETTINGS_GEONAMES + USER_KEY_GEONAMES)
     .then(res => res.json())
