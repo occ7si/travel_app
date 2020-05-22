@@ -1,10 +1,7 @@
-@import "./colortheme.scss";
+@import "./travel_app_theme.scss";
 
 #destinationResult {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 20px 10px;
     background-color: rgba($bg-color-primary, 0.37);
     display: flex;
     flex-direction: row;
@@ -13,6 +10,7 @@
 #destinationPicture {
     padding-right: 10px;
     min-width: 300px;
+    max-width: 500px;
 }
 
 #destinationCity,
@@ -23,30 +21,33 @@
 
 #destinationWeather,
 #daysLeft {
-    margin-bottom: 5px;
-    margin-top: 5px;
+    margin: 5px 0px;
 }
 
 #buttonsContainer {
     display:flex;
     flex-direction: row;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px 0px;
+    padding: 10px 5px;
 }
 
 button {
     background-color: white;
     border: 2px solid black;
     color: $text-color-primary;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 0px 5px;
+    padding: 5p 20px;
+    max-width: 200px;
+    width: 100%;
+    min-width: 100px;
+    height: 30px;
     &:hover {
-        border: 3px solid $color-highlight;
+        border: 2px solid $color-highlight;
     }
     &:disabled {
         background-color: $bg-color-primary;
         border: 2px solid white;
-        color: $bg-color-secondary;
+        color: $text-color-secondary;
     }
 }
 

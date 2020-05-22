@@ -49,7 +49,7 @@ function updateUI() {
          document.getElementById('daysLeft').innerHTML = `${destination.cityName},
                                                                 ${destination.countryName}
                                                                 is ${destination.daysLeft} days away`;
-         document.getElementById('destinationWeather').innerHTML = `The temperature for then is: ${destination.temp} °C`;
+         document.getElementById('destinationWeather').innerHTML = `The temperature for your departure day is: ${destination.temp} °C`;
 
 };
 

@@ -18,10 +18,16 @@
 
         <main>
             <section>
-                <label for="destination-form">Enter your destination</label>
+                <!-- <label for="destination-form">Enter your destination</label> -->
                 <form id = "destination-form" class="">
-                    <input id="destination" type="text" name="input" value="" placeholder="Enter a city" required>
-                    <input id="date" type="date" value ="" placeholder="Pick your departure date" required>
+                    <div class="form-container">
+                        <label for="destination">My trip to:</label>
+                        <input id="destination" type="text" name="input" value="" placeholder="Enter location" required>
+                    </div>
+                    <div class="form-container">
+                        <label for="date">Departing:</label>
+                        <input id="date" type="date" value ="" required>
+                    </div>
                     <button id="submitForm">Submit</button>
                 </form>
             <section>
