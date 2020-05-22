@@ -20,7 +20,7 @@ app.use(express.static('dist'))
 console.log(__dirname)
 
 // designates what port the app will listen to for incoming requests
-app.listen(3031, function () {
+app.listen(3031, () => {
     console.log('Example app listening on port 3031!')
 })
 
@@ -54,12 +54,12 @@ function createDestinationObj(req, response) {
     destination.date = req.body.date;
 
     getCoordForDestination(destination.cityName)
-    .then(function(res) {
+    .then(res => {
         // set country name for dest object
         destination.countryName = res.geonames[0].countryName;
         return getWeatherForCoord(res.geonames[0].lat, res.geonames[0].lng, destination.date);
     })
-    .then(function(res) {
+    .then(res => {
         for (let i = 0; i < res.data.length; i++) {
             if (res.data[i].valid_date === req.body.date) {
                 // Set temperature for dest object
@@ -73,13 +73,13 @@ function createDestinationObj(req, response) {
         }
         isTempSet = false;
     })
-    .then(function(res) {
+    .then(res => {
         return getPictureForDest(destination);
     })
-    .then(function(res) {
+    .then(res => {
         destination.image = res.hits[0].webformatURL;
     })
-    .then(function(res) {
+    .then(res => {
         response.send(destination);
     })
 };
@@ -98,7 +98,7 @@ function getPictureForDest(dest) {
     const countryName = `&q=${dest.countryName}`;
     return fetch (URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
     .then(res => res.json())
-    .then(function (res) {
+    .then(res => {
         if (res.hits.length === 0) {
             return fetch (URL_PIXABAY + KEY_PIXABAY + countryName + SETTINGS_PIXABAY)
             .then(res => res.json())
