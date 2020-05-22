@@ -1,36 +1,37 @@
 @import "./travel_app_theme.scss";
 
-#destinationResult {
-    padding: 20px 10px;
-    background-color: rgba($bg-color-primary, 0.37);
-    display: flex;
-    flex-direction: row;
+// destination info is displayed below the destination picture for mobile devices
+@media (max-width:1200px) {
+    #destinationResult {
+        padding: 20px 10px;
+        background-color: rgba($bg-color-primary, 0.37);
+        display: flex;
+        flex-direction: column;
+    }
+
+    #destinationPicture {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
 
-#destinationPicture {
-    padding-right: 10px;
-    min-width: 300px;
-    max-width: 500px;
+// destination info is displayed on the right hand side of the picture for larger displays
+@media (min-width:1201px) {
+    #destinationResult {
+        padding: 20px 10px;
+        background-color: rgba($bg-color-primary, 0.37);
+        display: flex;
+        flex-direction: row;
+    }
+
+    #destinationPicture {
+        padding-right: 10px;
+        min-width: 300px;
+        max-width: 500px;
+    }
 }
 
-#destinationCity,
-#departureTime {
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-#destinationWeather,
-#daysLeft {
-    margin: 5px 0px;
-}
-
-#buttonsContainer {
-    display:flex;
-    flex-direction: row;
-    margin: 20px 0px;
-    padding: 10px 5px;
-}
-
+// element style for all device sizes
 button {
     background-color: white;
     border: 2px solid black;
@@ -51,3 +52,20 @@ button {
     }
 }
 
+#buttonsContainer {
+    display:flex;
+    flex-direction: row;
+    margin: 20px 0px;
+    padding: 10px 5px;
+}
+
+#destinationCity,
+#departureTime {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#destinationWeather,
+#daysLeft {
+    margin: 5px 0px;
+}

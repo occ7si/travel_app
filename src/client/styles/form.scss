@@ -1,38 +1,86 @@
 @import "./travel_app_theme.scss";
 
-form {
-    padding: 40px;
-    background-color: $bg-color-secondary;
-}
+@media (max-width:1200px) {
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: $bg-color-secondary;
+    }
 
-.form-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-}
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: stretch;
+    }
 
-input {
-    padding: 5px 10px;
-    width: 300px;
-    margin: 2px 5px;
-    font-size: 2em;
-    font-family: $font-family-primary;
-    color: $text-color-secondary;
-    border: 0px;
-    background-color: $bg-color-secondary;
+    input {
+        padding: 5px 10px;
+        width: 100%;
+        margin: 2px 5px;
+        font-size: 2em;
+        font-family: $font-family-primary;
+        color: $text-color-secondary;
+        border: 0px;
+        background-color: $bg-color-secondary;
+        text-align: center;
+        &::-moz-placeholder {
+            opacity: 1;
+        }
+        &:hover {
+            color: $text-color-secondary-dark;
+        }
+    }
 
-    &:hover{
-        color: $text-color-secondary-dark;
+    label {
+        font-size: 2em;
+    }
+
+    #submitForm {
+        margin: 20px 5px;
+        width: 200px;
+        height: 30px;
     }
 }
 
-label {
-    font-size: 2em;
-}
+@media (min-width:1201px) {
+    form {
+        padding: 40px;
+        background-color: $bg-color-secondary;
+    }
 
-#submitForm {
-    margin: 20px 5px;
-    width: 200px;
-    height: 30px;
+    .form-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    input {
+        padding: 5px 10px;
+        width: 300px;
+        margin: 2px 5px;
+        font-size: 2em;
+        font-family: $font-family-primary;
+        color: $text-color-secondary;
+        border: 0px;
+        background-color: $bg-color-secondary;
+        &::-moz-placeholder {
+            opacity: 1;
+        }
+        &:hover{
+            color: $text-color-secondary-dark;
+        }
+    }
+
+    label {
+        font-size: 2em;
+    }
+
+    #submitForm {
+        margin: 20px 5px;
+        width: 200px;
+        height: 30px;
+    }
 }
