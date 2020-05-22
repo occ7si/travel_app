@@ -26,7 +26,7 @@ export function handleSubmit(event) {
         body:JSON.stringify({cityName:userInput, date: departureDate}),
     })
     .then(res => res.json())
-    .then(function(res) {
+    .then(res => {
         // update destination object with new destination info
         destination.cityName = res.cityName.charAt(0).toUpperCase() + res.cityName.slice(1);
         destination.date = res.date;
@@ -51,7 +51,7 @@ function updateUI() {
          document.getElementById('daysLeft').innerHTML = `
                                             ${destination.cityName},
                                             ${destination.countryName} is 
-                                            ${destination.daysLeft} days away`;
+                                            ${destination.daysLeft} day(s) away`;
          document.getElementById('destinationWeather').innerHTML = `The temperature for your departure day is: ${destination.temp} °C`;
 };
 
