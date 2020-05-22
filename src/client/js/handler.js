@@ -3,6 +3,10 @@ import fetch from "node-fetch";
 const destination = new Object();
 let daysLeft = 0;
 
+/**
+ * When the submit button is clicked this function requests a new destination card for the entered destination and date
+ * @param {Event} event - event which is triggered
+ */
 export function handleSubmit(event) {
     event.preventDefault();
     const userInput = document.getElementById('destination').value;
@@ -44,9 +48,10 @@ function updateUI() {
          document.getElementById('destinationPicture').src = destination.image;
          document.getElementById('destinationCity').innerHTML = `My trip to: ${destination.cityName}, ${destination.countryName}`;
          document.getElementById('departureTime').innerHTML = `Departing: ${destination.date}`;
-         document.getElementById('daysLeft').innerHTML = `${destination.cityName},
-                                                                ${destination.countryName}
-                                                                is ${destination.daysLeft} days away`;
+         document.getElementById('daysLeft').innerHTML = `
+                                            ${destination.cityName},
+                                            ${destination.countryName} is 
+                                            ${destination.daysLeft} days away`;
          document.getElementById('destinationWeather').innerHTML = `The temperature for your departure day is: ${destination.temp} °C`;
 };
 

@@ -43,12 +43,13 @@ let isTempSet = false;
 app.post('/getDestinationObj', createDestinationObj);
 
 /**
- * Creates a destination object
+ * Create a destination object
  * @param {string} req - request with city name and departure date
  * @param {string} response - callback to client with destination object
  */
 function createDestinationObj(req, response) {
     const destination = new Object();
+    // Set city name and date for dest object
     destination.cityName = req.body.cityName;
     destination.date = req.body.date;
 
@@ -59,12 +60,14 @@ function createDestinationObj(req, response) {
         return getWeatherForCoord(res.geonames[0].lat, res.geonames[0].lng, destination.date);
     })
     .then(function(res) {
-        for(let i = 0; i < res.data.length; i++) {
-            if(res.data[i].valid_date === req.body.date) {
+        for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].valid_date === req.body.date) {
+                // Set temperature for dest object
                 destination.temp = res.data[i].temp;
                 isTempSet = true;
             }
         }
+        // set "-" for temperature if the departure is not within the next 16 days
         if (isTempSet === false) {
             destination.temp = '-';
         }
@@ -83,17 +86,18 @@ function createDestinationObj(req, response) {
 
 /**
  * Requests image information from Pixabay API for destination
- * Returns country image if no city image is available for the destination
+ * Returns city image or
+ * returns country image if no city image is available for the destination
  * @param {Object} dest - destination
  */
 function getPictureForDest(dest) {
     const cityName = `&q=${dest.cityName}`;
     const countryName = `&q=${dest.countryName}`;
-    return fetch(URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
+    return fetch (URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)
     .then(res => res.json())
-    .then(function(res) {
+    .then(function (res) {
         if (res.hits.length === 0) {
-            return fetch(URL_PIXABAY + KEY_PIXABAY + countryName + SETTINGS_PIXABAY)
+            return fetch (URL_PIXABAY + KEY_PIXABAY + countryName + SETTINGS_PIXABAY)
             .then(res => res.json())
         } else {
             return res;
@@ -111,7 +115,7 @@ function getPictureForDest(dest) {
 function getWeatherForCoord(latitude, longitude, date) {
     const lat = `&lat=${latitude}`;
     const lng = `&lon=${longitude}`;
-    return fetch (URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
+    return fetch(URL_WEATHERBIT + lat + lng + KEY_WEATHERBIT)
     .then(res => res.json())
 };
 
