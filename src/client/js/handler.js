@@ -7,9 +7,7 @@ export function handleSubmit(event) {
     event.preventDefault();
     const userInput = document.getElementById('destination').value;
     const departureDate = document.getElementById('date').value;
-
     daysLeft = timeToDeparture(document.getElementById('date').valueAsDate);
-
     if (userInput === '' || departureDate === '') {
         throw new Error('Error: Enter a destination and a date!');
     }
@@ -50,7 +48,6 @@ function updateUI() {
                                                                 ${destination.countryName}
                                                                 is ${destination.daysLeft} days away`;
          document.getElementById('destinationWeather').innerHTML = `The temperature for your departure day is: ${destination.temp} °C`;
-
 };
 
 /**
