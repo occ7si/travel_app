@@ -2,7 +2,7 @@
 
 ## Content Description
 
-### Enter your destination
+### User Input
 The user can enter a city name to which he wants to travel and a departure date. When he hits the "Submit" button a destination card is generated for this city name.
 
 ### Destination card
