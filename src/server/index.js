@@ -91,6 +91,9 @@ function createDestinationObj(req, response) {
  * @param {Object} dest - destination
  */
 function getPictureForDest(dest) {
+    if (dest === '') {
+        throw new Error('getPictureForDest: argument "dest" is empty');
+    }
     const cityName = `&q=${dest.cityName}`;
     const countryName = `&q=${dest.countryName}`;
     return fetch (URL_PIXABAY + KEY_PIXABAY + cityName + SETTINGS_PIXABAY)

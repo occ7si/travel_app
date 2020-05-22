@@ -60,7 +60,7 @@ function updateUI() {
  * @param {string} date - departure date
  * @returns {number} days - days until departure
  */
-function timeToDeparture(date) {
+export function timeToDeparture(date) {
     const departureDate = date;
     const today = new Date();
     const timeDiff = departureDate.getTime() - today.getTime();
