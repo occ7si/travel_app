@@ -6,6 +6,7 @@ import './styles/footer.scss'
 import './styles/form.scss'
 import './styles/header.scss'
 import './styles/cardview.scss'
+import './styles/colortheme.scss'
 
 export {
     handleSubmit

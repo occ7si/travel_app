@@ -1,9 +1,11 @@
+@import "./colortheme.scss";
+
 #destinationResult {
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 10px;
     padding-right: 10px;
-    background-color: rgba(255, 199, 199, 0.37);
+    background-color: rgba($bg-color-primary, 0.37);
     display: flex;
     flex-direction: row;
 }
@@ -35,16 +37,16 @@
 button {
     background-color: white;
     border: 2px solid black;
-    color: black;
+    color: $text-color-primary;
     margin-left: 5px;
     margin-right: 5px;
     &:hover {
-        border: 3px solid rgb(252, 132, 132);
+        border: 3px solid $color-highlight;
     }
     &:disabled {
-        background-color: rgba(255, 199, 199, 0.37);
+        background-color: $bg-color-primary;
         border: 2px solid white;
-        color: rgb(150, 149, 149);
+        color: $bg-color-secondary;
     }
 }
 
