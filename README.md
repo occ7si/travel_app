@@ -12,3 +12,6 @@ The destination card contains different elements:
 - __Buttons__: The buttons "save trip" and "remove trip" are without functionality
 - __Days left until departure__: The destination card tells the user how many days are left until the departure.
 - __Temperature__: If the departure is during the next 15 days, a temperature for the destination is displayed.
+
+### For the Reviewer (Extend Option)
+I chose to display a picture of the destination's country when Pixabay brings up no result for the destination city.
